@@ -1,0 +1,19 @@
+extend layout.pug
+block content  
+    div(class="content-login")
+        div(class="wrapper-login")
+            form(class="form-login" action="/auth" method="post") 
+                label
+                    p Entrar
+                label
+                    p Email
+                input(placeholder="Digite seu email" name="username" id="username" required)
+                label
+                    p Senha
+                input(type="password" placeholder="Digite sua senha" name="password" id="password" required)
+                button(class="button")
+                    p Entrar
+                div(class="wrapper-login-links")
+                    a(href="/register") Registre-se
+                    a(href="/" class="disabled") Esqueci a senha
+                

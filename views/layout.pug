@@ -1,0 +1,37 @@
+html 
+    head 
+        title  Vendas On 
+        link(href="styles/style.css" rel="stylesheet")
+        link(rel="preconnect" href="https://fonts.googleapis.com")
+        link(rel="preconnect" href="https://fonts.gstatic.com" crossorigin)
+        link(href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet")
+    body
+        header
+            a(href="/dashboard") 
+                img(src='images/logo.png' alt='login' class="logo") 
+            input(placeholder="Buscar")
+            div 
+                ul.menu
+                    li
+                        img(src='images/mais.png' alt='login' class="icon" id="plus") 
+                        a(href="/newad") Novo Anúncio
+                    li.dropdown 
+                        img(src='images/perfil.png' alt='login' class="icon")
+                        div.dropdown-content
+                            img(src='images/perfil.png' alt='login' class="icon-white")
+                            a(href='/myprofile') Meu Perfil 
+                            a(href="/myads") Meus Anúncios 
+                            a(href="/login") Sair
+
+                    li.dropdown 
+                        img(src='images/shopping-cart.png' alt='login' class="icon")
+                        div.dropdown-content 
+                            img(src='images/shopping-cart.png' alt='login' class="icon-white")
+                            a(href="/cart") Meu carrinho 
+                            a(href="/login") Sair
+
+        
+        block content 
+        footer 
+            p Feito por João Vitor
+

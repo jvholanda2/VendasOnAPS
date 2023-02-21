@@ -1,0 +1,15 @@
+extend layout.pug
+block content  
+    <div class="content-login">
+    <div class="wrapper-login">
+        <form class="form-login" action="/register" method="post"> 
+            <label>Registrar</label>
+            <label>Email</label>
+            <input placeholder="Digite seu email" name="email" id="email" required>
+            <label>Senha</label>
+            <input type="password" placeholder="Digite sua senha" name="password" id="password" required>
+            <label>Nome</label>
+            <input placeholder="Digite seu nome" name="username" id="username" required>
+            <button class="button">Registrar</button>
+            <div class="wrapper-login-links">
+                <a href="/login">Entrar</a>

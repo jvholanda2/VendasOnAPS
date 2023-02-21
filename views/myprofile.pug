@@ -1,0 +1,19 @@
+extend layout.pug
+block content  
+    <div class="content-login">
+    <div class="wrapper-login">
+        <form class="form-login" action="/register" method="post"> 
+            <label>Meu Perfil</label>
+            <label>Email</label>
+            <input placeholder="Digite seu email" name="email" id="email" required>
+            <label>Senha</label>
+            <input type="password" placeholder="Digite sua senha" name="password" id="password" required>
+            <label>Nome</label>
+            <input placeholder="Digite seu nome" name="username" id="username" required>
+            <label>Endereço</label>
+            <input placeholder="Digite seu CEP, Bairro, Rua, Nº da Casa" name="username" id="username" required>
+            <button class="button">Meus Anúncios</button>
+            <button class="button">Salvar</button>
+
+            <div class="wrapper-login-links">
+                <a href="/dashboard">Voltar</a>
