@@ -3,6 +3,32 @@ block content
     div.content
         div.content-title 
             h1 Carrinho
-            a(href="/logout") Sair
-        div.cart
-            
+            a(href="/logout") Sair 
+        div(class="content-login")
+            div(class="wrapper-login")
+                <form class="form-login grid grid-template" action="/register" method="post"> 
+                    label Produto 
+                    label Preço 
+                    label Quantidade
+                    div.cart-product-info
+                        img(src='images/produto.png' alt='login' class="check")
+                        strong Nome do produto
+                    strong R$ 500,00
+                    strong 1
+                    div.cart-product-info
+                        img(src='images/produto.png' alt='login' class="check")
+                        strong Nome do produto
+                    strong R$ 500,00
+                    strong 1
+                    br.br
+                </form>
+                div.cart-total
+                    label Total 
+                    strong R$ 1000,00
+                div.cart-buy-button 
+                    a(href="/dashboard").button Continuar Comprando 
+                    a(href="/buyfinish").button#add-cart Finalizar Compra
+
+                
+
+               

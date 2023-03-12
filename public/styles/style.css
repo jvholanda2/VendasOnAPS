@@ -10,6 +10,10 @@
     color: orange;
  }
 
+ a{
+   text-decoration: none; 
+ }
+
 /* -----Header e Footer---- */
 
 header {
@@ -110,7 +114,7 @@ li:hover {
     opacity: 0.8;
 }
 
-footer {
+footer, .footer {
     height: 2em;
     color: white;
     background: black;
@@ -122,6 +126,12 @@ footer {
     width: 100%;
     bottom: 0;
 }
+
+.hidden {
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 0s 2s, opacity 2s linear;
+  }
 /* -----Login e Cadastro---- */
 .content-login {
     display: flex;
@@ -239,12 +249,14 @@ footer {
 }
 
 .price {
+    color: black;
     font-size: 1.5em;
     font-weight: 300;
     padding: 5px;
 }
 
 .product-name{
+    color: black;
     font-size: 1.2em;
     font-weight: 500;
     padding: 5px;
@@ -280,21 +292,26 @@ footer {
     gap: 20px;
 }
 
-.like {
-    background: green;
-}
-
-.dislike {
-    background: red;
-}
-
 .like, .dislike {
+    background: white;
     padding: 10px;
     border-radius: 50%;
 }
 
-.like:hover, .dislike:hover {
-    background: white;
+.like:hover{
+    background: green;
+}
+
+.dislike:hover {
+    background: red;
+}
+
+.background-green{
+    background: green;
+}
+
+.background-red{
+    background: red;
 }
 
 .like-image, .dislike-image  {
@@ -317,4 +334,57 @@ footer {
 
 #add-cart {
     background: green;
+}
+
+.check {
+    width: 200px;
+    margin: 0 auto;
+}
+
+/* -----Cart----- */
+.grid {
+	display: grid;
+}
+
+.grid-template {
+	grid-template: 50px 1fr / 2fr 1fr 1fr;
+    gap: 0;
+}
+
+.cart-product-info {
+    display: flex;
+    align-items: flex-end;
+    margin-top: 5px;
+}
+
+.cart-product-info img{
+    width: 100px;
+    margin-right: 10px;
+}
+
+.grid strong {
+    display: grid;
+    align-content: end;
+    justify-items: end;
+    border-bottom: solid 1px;
+}
+
+.cart-total {
+    display: flex;
+    flex-direction: column;
+    align-items: end;
+    margin: 0 10px 10px 0;
+}
+
+.cart-buy-button {
+    margin: 10px;
+    display: flex;
+    justify-content: space-between;
+}
+.cart-buy-button a {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 5px 10px;
+    text-decoration: none;
 }

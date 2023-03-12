@@ -5,7 +5,7 @@ block content
             h1 Título do Produto
             a(href="/logout") Sair 
         div.product
-            img(src="images/produto.png", alt="produto", class="product-image")
+            img(src="images/infoproduto.png", alt="produto", class="product-image")
             div.product-info
                 strong.price R$ 10,00
                 p.description Lorem ipsum dolor, sit amet consectetur adipisicing elit. Fugiat accusamus numquam esse aut, porro quod quidem? Nemo eaque dolor quibusdam provident totam aliquam quisquam sequi, iusto, dolorum necessitatibus adipisci pariatur.
@@ -16,7 +16,12 @@ block content
                         img(src="images/dislike.png", alt="produto", class="dislike-image")
                 div.comments 
                     strong.title-comments Comentários
-                    p.comment Lorem ipsum dolor sit, amet consectetur adipisicing elit. Aliquam quaerat exercitationem quis dolorum? Qui maiores, blanditiis fugit voluptas ducimus odit repellat corrupti, dolore quo possimus dolorum reiciendis nemo nihil minima.
+                    div.comment
+                        strong.user-comments Usuario
+                        p.comment Lorem ipsum dolor sit, amet consectetur adipisicing elit.
+                    div.comment
+                        strong.user-comments Usuario
+                        p.comment Lorem ipsum dolor sit, amet consectetur adipisicing elit.
         div.buy-button 
             a(href="/dashboard").button Continuar Comprando 
             a(href="/cart").button#add-cart Adicionar ao Carrinho

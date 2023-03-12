@@ -34,8 +34,16 @@ server.get("/newad", function(req,res) {
     return res.render('newad', {youAreUsingPug: true});
 })
 
+server.get("/myads", function(req,res) { 
+    return res.render('myads', {youAreUsingPug: true});
+})
+
 server.get("/myprofile", function(req,res) { 
     return res.render('myprofile', {youAreUsingPug: true});
+})
+
+server.get("/buyfinish", function(req,res) { 
+    return res.render('buyfinish', {youAreUsingPug: true});
 })
 
 
