@@ -1,12 +1,12 @@
-//------Animação desaparecimento footer--------
-// const footer = document.querySelector("footer")
+//-----Animação desaparecimento footer--------
+const footer = document.querySelector("footer")
 
-// function hiddenFooter() {
-//     footer.classList.remove(".footer")
-//     footer.classList.add("hidden")
-// }
+function hiddenFooter() {
+    footer.classList.remove(".footer")
+    footer.classList.add("hidden")
+}
 
-// setTimeout(hiddenFooter, 500)
+setTimeout(hiddenFooter, 500)
 
 /*-------Estado Like/Dislike---------------------*/
 let like = document.querySelector(".like")
