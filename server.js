@@ -16,12 +16,6 @@ server.use(session({
   saveUninitialized: false, // don't create session until something stored
   secret: 'shhhh, very secret'
 }));
-var session = require('express-session');
-server.use(session({
-  resave: false, // don't save session if unmodified
-  saveUninitialized: false, // don't create session until something stored
-  secret: 'shhhh, very secret'
-}));
 server.use(function(req, res, next){
   var err = req.session.error;
   var msg = req.session.success;
@@ -46,15 +40,11 @@ server.get("/login", function(req,res) {
 })
 
 server.post("/auth", urlencodedParser, async function(req,res) {
-    console.log(req.body)
-
     let email = req.body.email;
     let password = req.body.password;
 
     if(password && email) {
-        console.log("texto aleatorio")
         const users =  await sql`select * from users u where u.email = ${email} and u.password = ${password}`
-        console.log(users)
         if (users.length == 1) {
             const user = users[0]
             // Regenerate session when signing in
@@ -78,7 +68,6 @@ server.get("/register", function(req,res) {
 })
 
 server.post("/register", urlencodedParser, async function(req,res) {
-    console.log(req.body)
     let username = req.body.username;
 	let password = req.body.password;
     let email = req.body.email;
