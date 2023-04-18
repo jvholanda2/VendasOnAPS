@@ -2,13 +2,13 @@ extend layout.pug
 block content  
     div.content
         div.content-title 
-            h1 Título do Produto
+            h1 #{product.product}
             a(href="/logout") Sair 
         div.product
-            img(src="images/infoproduto.png", alt="produto", class="product-image")
+            img(src=product.image, alt="produto", class="product-image")
             div.product-info
-                strong.price R$ 10,00
-                p.description Lorem ipsum dolor, sit amet consectetur adipisicing elit. Fugiat accusamus numquam esse aut, porro quod quidem? Nemo eaque dolor quibusdam provident totam aliquam quisquam sequi, iusto, dolorum necessitatibus adipisci pariatur.
+                strong.price R$ #{product.price}
+                p.description #{product.description}
                 div.buttons-like
                     button.like 
                         img(src="images/like.png", alt="produto", class="like-image")

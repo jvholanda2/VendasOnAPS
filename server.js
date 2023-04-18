@@ -6,10 +6,12 @@ const path = require('path');
 const parser = require('body-parser')
 
 // create application/x-www-form-urlencoded parser
-var urlencodedParser = parser.urlencoded({ extended: false })
+server.use(parser.urlencoded({ extended: false }));
+server.use(parser.json());
+
 const postgres = require('postgres');
 
-const sql = postgres('postgres://postgres:root@localhost:5432/vendason');
+const sql = postgres('postgres://postgres:postgrespw@localhost:32768/postgres');
 var session = require('express-session');
 server.use(session({
   resave: false, // don't save session if unmodified
@@ -39,7 +41,7 @@ server.get("/login", function(req,res) {
     return res.render('login', {youAreUsingPug: true});
 })
 
-server.post("/auth", urlencodedParser, async function(req,res) {
+server.post("/auth", async function(req,res) {
     let email = req.body.email;
     let password = req.body.password;
 
@@ -67,10 +69,8 @@ server.get("/register", function(req,res) {
     return res.render('register', {youAreUsingPug: true});
 })
 
-server.post("/register", urlencodedParser, async function(req,res) {
-    let username = req.body.username;
-	let password = req.body.password;
-    let email = req.body.email;
+server.post("/register", async function(req,res) {
+    let {username, email, password} = req.body
 
     if(username && password && email) {
         const user =  await sql`insert into users(name, email, password) values(${username}, ${email}, ${password})returning name`
@@ -81,19 +81,47 @@ server.post("/register", urlencodedParser, async function(req,res) {
     }
 })
 
-server.get("/dashboard", restrict,function(req,res) { 
-    return res.render('dashboard', {youAreUsingPug: true});
+server.get("/dashboard", restrict,async function(req,res) {
+    const products =  await sql`select * from products`
+    if (products.length ){
+        res.locals.products = products
+        return res.render('dashboard', {youAreUsingPug: true});
+    }
 })
 
-server.get("/product", function(req,res) { 
-    return res.render('product', {youAreUsingPug: true});
+server.get("/product", async function(req,res) { 
+    let id = parseInt( req.query.id);
+    const products =  await sql`select * from products p where p.id = ${id}`
+    if (products.length ){
+        let product = products[0]
+        res.locals.product = product
+        return res.render('product', {youAreUsingPug: true});
+    }
+})
+
+server.post("/product",restrict, async function(req,res) { 
+    let {product,price,description,image,quantity} = req.body
+    const user = req.session.user.id
+    const product_id =  await sql`insert into products(product, price, description, image, quantity, user_id) values(${product}, ${price}, ${description}, ${image}, ${quantity}, ${user})returning id`
+    return res.redirect(`/product?id=${product_id}`);
+})
+
+server.post("/react", restrict, async function(req, res) {
+    let product_id = parseInt( req.query.product_id);
+    const user = req.session.user.id
+    let flag = req.query.flag;
+
+    await sql`insert into likes(user_id, product_id, flag) values(${user}, ${product_id}, ${flag})`
+
+    return res.body({"flag":flag})
+
 })
 
 server.get("/cart", function(req,res) { 
     return res.render('cart', {youAreUsingPug: true});
 })
 
-server.get("/newad", function(req,res) { 
+server.get("/newad",restrict, function(req,res) { 
     return res.render('newad', {youAreUsingPug: true});
 })
 
