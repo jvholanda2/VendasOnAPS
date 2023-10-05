@@ -19,6 +19,7 @@ block content
                         img(src="/images/dislike.png", alt="produto", class="dislike-image")
         div.buy-button 
             a(href="/dashboard").button Continuar Comprando 
-            //- button(onclick=`deletarProduto(${product.id})`).button-del Deletar Produto
-            a(href=`/deletead/${product.id}`).button-del Excluir Anúncio
+            div.buy-button 
+            if user && product.userId === user.id
+                a(href=`/deletead/${product.id}`).button-del Excluir Anúncio
             a(href="/cart").button#add-cart Adicionar ao Carrinho

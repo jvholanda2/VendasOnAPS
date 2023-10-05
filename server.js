@@ -99,17 +99,45 @@ server.get("/product/:id", async function(req,res) {
     const adRepository = new AdRepository(prisma)
     const ad = await adRepository.findById(productId)
     console.log(ad)
-    return res.render('product', {youAreUsingPug: true, product: ad});
+    const user = req.session.user;
+    //return res.render('product', {youAreUsingPug: true, product: ad});
+    return res.render('product', { youAreUsingPug: true, product: ad, user });
 })
 
+// server.get("/deletead/:id", restrict, async function(req, res) {
+//     if (!req.session.user) {
+//         res.redirect('/login')
+//     }
+
+//     const adId = parseInt(req.params.id, 10);
+  
+//     const adRepository = new AdRepository(prisma);
+//     const deletedAd = await adRepository.deleteById(adId);
+  
+//     if (deletedAd) {
+//       res.redirect('/dashboard');
+//     } else {
+//       res.locals.message = 'Erro ao excluir o anúncio. Tente novamente mais tarde.';
+//       res.redirect('/dashboard');
+//     }
+//   });
 server.get("/deletead/:id", restrict, async function(req, res) {
-    if (!req.session.user) {
-        res.redirect('/login')
-    }
-    
     const adId = parseInt(req.params.id, 10);
   
     const adRepository = new AdRepository(prisma);
+    const ad = await adRepository.findById(adId);
+  
+    if (!ad) {
+      res.locals.message = 'Anúncio não encontrado.';
+      return res.redirect('/dashboard');
+    }
+  
+    // Verificar se o usuário logado é o dono do anúncio
+    if (ad.userId !== req.session.user.id) {
+      res.locals.message = 'Você não tem permissão para excluir este anúncio.';
+      return res.redirect('/dashboard');
+    }
+  
     const deletedAd = await adRepository.deleteById(adId);
   
     if (deletedAd) {
@@ -119,6 +147,7 @@ server.get("/deletead/:id", restrict, async function(req, res) {
       res.redirect('/dashboard');
     }
   });
+  
   
 
 
