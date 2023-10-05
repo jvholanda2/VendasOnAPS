@@ -1,0 +1,23 @@
+extends layout.pug
+
+block content
+  div.content
+    div.content-title
+      h1 Editar Anúncio
+      div
+        a(href="/dashboard") Home
+        a(href="/logout") Sair
+    form(method="post", action=`/editad/${ad.id}`)
+      div.form-group
+        label(for="product") Produto
+        input(type="text", id="product", name="product", value=ad.product)
+      div.form-group
+        label(for="price") Preço
+        input(type="text", id="price", name="price", value=ad.price)
+      div.form-group
+        label(for="description") Descrição
+        input(type="text", id="description", name="description", value=ad.description)
+      div.form-group
+        label(for="image") URL da Imagem
+        input(type="text", id="image", name="image", value=ad.image)
+      button(type="submit") Atualizar Anúncio

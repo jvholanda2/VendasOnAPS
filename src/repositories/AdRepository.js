@@ -91,5 +91,25 @@ export class AdRepository {
       }
     }
     
+    async update(id, product, price, description, image) {
+      try {
+        const updatedAd = await this.prisma.ad.update({
+          where: {
+            id: id,
+          },
+          data: {
+            product: product,
+            price: price,
+            description: description,
+            image: image,
+          },
+        });
+        return updatedAd;
+      } catch (error) {
+        console.error(error);
+        return null;
+      }
+    }
+    
     
   }

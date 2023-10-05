@@ -1,4 +1,33 @@
-extend layout.pug
+//- extend layout.pug
+//- block content  
+//-     div.content
+//-         div.content-title 
+//-             h1 #{product.product}
+//-             div
+//-                 a(href="/dashboard") Home 
+//-                 a(href="/logout") Sair 
+//-         div.product
+//-             div.image
+//-                 img(src=product.image, alt="produto", class="product-image")
+//-             div.product-info
+//-                 strong.price #{product.price}
+//-                 p.description #{product.description}
+//-                 div.buttons-like
+//-                     button.like 
+//-                         img(src="/images/like.png", alt="produto", class="like-image")
+//-                     button.dislike 
+//-                         img(src="/images/dislike.png", alt="produto", class="dislike-image")
+//-         div.buy-button 
+//-             a(href="/dashboard").button Continuar Comprando 
+//-             div.buy-button 
+//-             if user && product.userId === user.id
+//-                 a(href=`/deletead/${product.id}`).button-del Excluir Anúncio
+//-             if user && product.userId === user.id
+//-                 a(href=`/updatead/${product.id}`).button Editar Anúncio
+//-             a(href="/cart").button#add-cart Adicionar ao Carrinho
+
+extends layout.pug
+
 block content  
     div.content
         div.content-title 
@@ -19,7 +48,7 @@ block content
                         img(src="/images/dislike.png", alt="produto", class="dislike-image")
         div.buy-button 
             a(href="/dashboard").button Continuar Comprando 
-            div.buy-button 
             if user && product.userId === user.id
                 a(href=`/deletead/${product.id}`).button-del Excluir Anúncio
+                a(href=`/editad/${product.id}`).button Editar Anúncio
             a(href="/cart").button#add-cart Adicionar ao Carrinho
