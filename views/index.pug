@@ -1,12 +1,9 @@
 extend layout.pug
-block content  
-    h1 Conteúdo
-    p Lorem ipsum dolor sit amet consectetur adipisicing elit. Tenetur porro delectus quos, maiores voluptatum totam molestiae, aliquam cumque dolores similique illum error pariatur perspiciatis exercitationem consequatur id minus amet dolorum?
-    //- #container.col
-    //- if youAreUsingPug
-    //-     p You are amazing Sergião
-    //- else
-    //-     p Get on it!
-    //- p.
-    //-     Pug is a terse and simple templating language with a
-    //-     strong focus on performance and powerful features.
+block content 
+    div.inicial
+        div
+            img(src='images/logo.png' alt='login' class="logo") 
+            h1 Seu site de compra e venda!
+        div.in-buttons
+            a.button(href="/login") Entrar 
+            a(href="/register") Registre-se

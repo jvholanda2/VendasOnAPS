@@ -177,6 +177,7 @@ footer, .footer {
    height: 30px;
    border-radius: 4px;
    background: orange;
+   opacity: 0.9;
    color: white;
    font-weight: 600;
    font-size: 16px;
@@ -272,13 +273,20 @@ footer, .footer {
 }
 
 .product-image {
-    width: 60%;
+    width: 100%;
+    border: solid red 3px;
+    object-fit: fill;
+}
+
+.product img {
+    //width: 60%;
 }
 
 .product-info {
     box-shadow: 0px 10px 20px 0px rgba(0,0,0,0.50);
     padding: 20px;
     border-radius: 4px;
+    max-width: 220;
 }
 
 .description {
@@ -321,6 +329,7 @@ footer, .footer {
 .buy-button {
     display: flex;
     justify-content: space-between;
+    align-items: baseline;
     margin: 20px 20%;
 }
 
@@ -388,3 +397,46 @@ footer, .footer {
     padding: 5px 10px;
     text-decoration: none;
 }
+
+.inicial div {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+    padding-bottom: 30px;
+    background: black;
+}
+
+.inicial a{
+    padding: 10px 10px 0 10px;
+}
+
+.inicial  {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+    padding: 30px;
+    background: black;
+    margin-top: 30px;
+}
+.in-buttons {
+    display: flex;
+    flex-direction: row !important;
+    justify-content: center !important;
+    align-items: baseline !important;
+    gap: 13px;
+    color: white;
+}
+
+.in-buttons a {
+    color: white;
+}
+
+.inicial .logo {
+    width: 20em;
+}
+
+

@@ -6,17 +6,13 @@ block content
             a(href="/logout") Sair 
         div.cards
             a(href="/product").card
-                img(src="images/produto.png", alt="produto", class="img-product")
+                img(src="/images/produto.png", alt="produto", class="img-product")
                 strong.price R$ 10,00
-                span.product-name Nome do produto 
-                button.button Ver Produto
-            a(href="/product").card
-                img(src="images/infoproduto.png", alt="produto", class="img-product")
-                strong.price R$ 10,00
-                span.product-name Nome do produto 
-                button.button Ver Produto
-            a(href="/product").card
-                img(src="images/produto.png", alt="produto", class="img-product")
-                strong.price R$ 10,00
-                span.product-name Nome do produto 
-                button.button Ver Produto       
+                span.product-name Card de Referência 
+                button.button Ver Produto 
+            each ad in ads
+                a(href=`/product/${ad.id}`, class="card") 
+                    img(src=`/ ${ad.image}` , alt=ad.product, class="img-product")
+                    strong.price R$ #{ad.price}
+                    span.product-name #{ad.product}
+                    button.button Ver Produto

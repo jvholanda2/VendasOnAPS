@@ -1,28 +1,33 @@
-const express = require('express');
+import { PrismaClient } from "@prisma/client";
+import  express  from "express";
+import path from "path";
+import parser from "body-parser";
+import postgres from "postgres";
+import session from "express-session";
+import { UserRepository } from "./src/repositories/UserRepository.js";
+import { User } from "./src/entity/user.js";
+import { AdRepository } from "./src/repositories/AdRepository.js";
+import { Ad } from "./src/entity/ad.js"
+
 const server = express();
 
-//foi achado esse erro pelo linter
-const path = require('path');
-const parser = require('body-parser')
-
-// create application/x-www-form-urlencoded parser
 var urlencodedParser = parser.urlencoded({ extended: false })
-const postgres = require('postgres');
-
+const prisma = new PrismaClient()
 const sql = postgres('postgres://postgres:root@localhost:5432/vendason');
-var session = require('express-session');
+
 server.use(session({
   resave: false, // don't save session if unmodified
   saveUninitialized: false, // don't create session until something stored
   secret: 'shhhh, very secret'
 }));
+
 server.use(function(req, res, next){
   var err = req.session.error;
   var msg = req.session.success;
   delete req.session.error;
   delete req.session.success;
   res.locals.message = '';
-  if (err) res.locals.message = '<p class="msg error">' + err + '</p>';
+  if (err) res.locals.message = '<p class="msg_error">' + err + '</p>';
   if (msg) res.locals.message = '<p class="msg success">' + msg + '</p>';
   next();
 });
@@ -31,8 +36,8 @@ server.set('view engine', 'pug');
 server.set('views', './views');
 server.use(express.static('public'));
 
-server.get("/", function(req,res) { 
-    return res.render('login', {youAreUsingPug: true});
+server.get("/", async function(req,res) { 
+    return res.render('index', {youAreUsingPug: true});
 })
 
 server.get("/login", function(req,res) { 
@@ -43,23 +48,17 @@ server.post("/auth", urlencodedParser, async function(req,res) {
     let email = req.body.email;
     let password = req.body.password;
 
-    if(password && email) {
-        const users =  await sql`select * from users u where u.email = ${email} and u.password = ${password}`
-        if (users.length == 1) {
-            const user = users[0]
-            // Regenerate session when signing in
-            // to prevent fixation
+    const userRepository = new UserRepository(prisma)
+    const resultado = await userRepository.findByEmail(email)
+
+    if (resultado && password == resultado.password) {
             req.session.regenerate(function(){
-              // Store the user's primary key
-              // in the session store to be retrieved,
-              // or in this case the entire user object
-              req.session.user = user;
-              res.redirect('/dashboard');
-            });
-          } else {
-            res.locals.message = 'Email ou Senha incorretos, tente novamente!'
-            return res.render('login', {youAreUsingPug: true});
-          }
+            req.session.user = resultado;
+            res.redirect('/dashboard'); 
+        });
+    } else {
+        res.locals.message = 'Email ou Senha incorretos, tente novamente!'
+        return res.render('login', {youAreUsingPug: true});
     }
 })
 
@@ -68,40 +67,105 @@ server.get("/register", function(req,res) {
 })
 
 server.post("/register", urlencodedParser, async function(req,res) {
-    let username = req.body.username;
+    let name = req.body.name;
 	let password = req.body.password;
     let email = req.body.email;
+    
+    const userRepository = new UserRepository(prisma)
+    const user = await userRepository.save(new User(null,name,email,password,""))
 
-    if(username && password && email) {
-        const user =  await sql`insert into users(name, email, password) values(${username}, ${email}, ${password})returning name`
-        if (user.length)
+    if(name && password && email) {
+        if (user) {
             res.redirect('/login')
-        else
-            res.redirect('/register')
+        }
+        else {
+            res.locals.message = 'Já existe alguém com esse email, tente novamente!'
+            return res.render('register', {youAreUsingPug: true});
+        }
     }
 })
 
-server.get("/dashboard", restrict,function(req,res) { 
-    return res.render('dashboard', {youAreUsingPug: true});
+server.get("/dashboard", restrict, async function(req,res) { 
+
+    const adRepository = new AdRepository(prisma)
+    const ads = await adRepository.findAll()
+    return res.render('dashboard', { youAreUsingPug: true, ads });
+   
+}) 
+
+server.get("/product/:id", async function(req,res) { 
+    const productId = parseInt(req.params.id, 10)
+    console.log(productId)
+    const adRepository = new AdRepository(prisma)
+    const ad = await adRepository.findById(productId)
+    console.log(ad)
+    return res.render('product', {youAreUsingPug: true, product: ad});
 })
 
-server.get("/product", function(req,res) { 
-    return res.render('product', {youAreUsingPug: true});
-})
 
 server.get("/cart", function(req,res) { 
+    if (!req.session.user) {
+        res.redirect('/login')
+    }
     return res.render('cart', {youAreUsingPug: true});
 })
 
 server.get("/newad", function(req,res) { 
+    if (!req.session.user) {
+        res.redirect('/login')
+    }
     return res.render('newad', {youAreUsingPug: true});
 })
 
-server.get("/myads", function(req,res) { 
-    return res.render('myads', {youAreUsingPug: true});
+server.post("/newad", urlencodedParser, async function(req,res) {
+    if (!req.session.user) {
+        res.redirect('/login')
+    }
+
+    let product = req.body.product
+    let price = req.body.price
+    let description = req.body.description
+    let image = req.body.image
+    let userId = req.session.user.id
+   
+    console.log(req.session.user)
+    console.log(product,price,image,description)
+
+    const adRepository = new AdRepository(prisma)
+    const ad = await adRepository.save(new Ad(null,product,price,description,image,userId))
+    
+    if(product && price && description && image) {
+        if (ad) {
+            return res.render('product', {youAreUsingPug: true, product: ad});
+        } else {
+            res.locals.message = "Anúncio ja existente, tente novamente!"
+            return res.render('newad', {youAreUsingPug: true});
+        }
+    }
 })
 
-server.get("/myprofile", function(req,res) { 
+server.get("/myads", async function(req,res) { 
+    if (!req.session.user) {
+        res.redirect('/login')
+    }
+
+    const userId = req.session.user.id;
+    const adRepository = new AdRepository(prisma);
+    const userAds = await adRepository.findByUserId(userId);
+    
+    return res.render('myads', { youAreUsingPug: true, ads: userAds });
+})
+
+server.get("/myprofile", async function(req,res) { 
+    if (!req.session.user) {
+        res.redirect('/login')
+    }
+    // const email = req.session.user.email
+    // const userRepository = new UserRepository(prisma)
+    // const user = await userRepository.findByEmail(email)
+
+    //console.log(name,password,email)
+
     return res.render('myprofile', {youAreUsingPug: true});
 })
 
@@ -115,7 +179,6 @@ server.get("/logout", function(req,res) {
         res.redirect('/');
     });
 })
-
 
 server.listen(5000, function() {
     console.log("tá rodando");

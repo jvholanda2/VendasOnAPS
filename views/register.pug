@@ -1,15 +1,36 @@
-extend layout.pug
-block content  
-    <div class="content-login">
-    <div class="wrapper-login">
-        <form class="form-login" action="/register" method="post"> 
-            <label>Registrar</label>
-            <label>Email</label>
-            <input placeholder="Digite seu email" name="email" id="email" required>
-            <label>Senha</label>
-            <input type="password" placeholder="Digite sua senha" name="password" id="password" required>
-            <label>Nome</label>
-            <input placeholder="Digite seu nome" name="username" id="username" required>
-            <button class="button">Registrar</button>
-            <div class="wrapper-login-links">
-                <a href="/login">Entrar</a>
+//- extend layout.pug
+//- block content  
+//-     <div class="content-login">
+//-     <div class="wrapper-login">
+//-         if message
+//-             p #{message}
+//-         <form class="form-login" action="/register" method="post"> 
+//-             <label>Registrar</label>
+//-             <label>Email</label>
+//-             <input placeholder="Digite seu email" name="email" id="email" required>
+//-             <label>Senha</label>
+//-             <input type="password" placeholder="Digite sua senha" name="password" id="password" required>
+//-             <label>Nome</label>
+//-             <input placeholder="Digite seu nome" name="name" id="name" required>
+//-             <button class="button">Registrar</button>
+//-             <div class="wrapper-login-links">
+//-                 <a href="/login">Entrar</a>
+extends layout.pug
+
+block content
+  .content-login
+    .wrapper-login
+      if message
+        p #{message}
+      form.form-login(action="/register", method="post")
+        label Registrar
+        label(for="email") Email
+        input(type="text", placeholder="Digite seu email", name="email", id="email", required)
+        label(for="password") Senha
+        input(type="password", placeholder="Digite sua senha", name="password", id="password", required)
+        label(for="name") Nome
+        input(type="text", placeholder="Digite seu nome", name="name", id="name", required)
+        button.button(type="submit") Registrar
+        .wrapper-login-links
+          a(href="/login") Entrar
+

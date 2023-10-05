@@ -2,7 +2,9 @@ extend layout.pug
 block content  
     <div class="content-login">
     <div class="wrapper-login">
-        <form class="form-login" action="/register" method="post"> 
+        if message
+            p #{message}
+        <form class="form-login" action="/newad" method="post"> 
             <label>Novo Anuncio</label>
             <label>Produto</label>
             <input placeholder="Digite o nome do produto" name="product" id="product" required>
@@ -11,9 +13,7 @@ block content
             <label>Descrição</label>
             <input placeholder="Digite a descrição do produto" name="description" id="description" required>
             <label>Imagem</label>
-            <input type="file" placeholder="oi"  accept="image/png, image/jpeg"  multiple /> 
-            <label>Quantidade disponível</label>
-            <input type="">
+            <input placeholder="URL da imagem" name="image" id="image" required/> 
             <button class="button">Salvar</button>
             <div class="wrapper-login-links">
                 <a href="/dashboard">Voltar</a>

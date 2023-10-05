@@ -1,1 +1,18 @@
-h1 vejo o que fazer, se é apenas uma variação da listagem, 
+extend layout.pug
+block content
+    div.content
+        div.content-title 
+            h1 Meus Anúncios
+            a(href="/logout") Sair 
+        div.cards
+            a(href="/product").card
+                img(src="images/produto.png", alt="produto", class="img-product")
+                strong.price R$ 10,00
+                span.product-name Nome do produto 
+                button.button Ver Produto 
+            each ad in ads
+                a(href=`/product/${ad.id}`, class="card")
+                    img(src=ad.image, alt=ad.product, class="img-product")
+                    strong.price R$ #{ad.price}
+                    span.product-name #{ad.product}
+                    button.button Ver Produto

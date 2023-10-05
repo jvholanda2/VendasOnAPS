@@ -1,19 +1,55 @@
-extend layout.pug
-block content  
-    <div class="content-login">
-    <div class="wrapper-login">
-        <form class="form-login" action="/register" method="post"> 
-            <label>Meu Perfil</label>
-            <label>Email</label>
-            <input placeholder="Digite seu email" name="email" id="email" required>
-            <label>Senha</label>
-            <input type="password" placeholder="Digite sua senha" name="password" id="password" required>
-            <label>Nome</label>
-            <input placeholder="Digite seu nome" name="username" id="username" required>
-            <label>Endereço</label>
-            <input placeholder="Digite seu CEP, Bairro, Rua, Nº da Casa" name="username" id="username" required>
-            <button class="button">Meus Anúncios</button>
-            <button class="button">Salvar</button>
+//- extend layout.pug
+//- block content  
+//-     <div class="content-login">
+//-     <div class="wrapper-login">
+//-         <form class="form-login" action="/register" method="post"> 
+//-             <label>Meu Perfil</label>
+//-             <label>Email</label>
+//-             <input placeholder="Digite seu email" name="email" id="email" required>
+//-             <label>Senha</label>
+//-             <input type="password" placeholder="Digite sua senha" name="password" id="password" required>
+//-             <label>Nome</label>
+//-             <input placeholder="Digite seu nome" name="username" id="username" required>
+//-             <label>Endereço</label>
+//-             <input placeholder="Digite seu CEP, Bairro, Rua, Nº da Casa" name="username" id="username" required>
+//-             <button class="button">Meus Anúncios</button>
+//-             <button class="button">Salvar</button>
 
-            <div class="wrapper-login-links">
-                <a href="/dashboard">Voltar</a>
+//-             <div class="wrapper-login-links">
+//-                 <a href="/dashboard">Voltar</a>
+
+block content  
+    div.content-login
+        div.wrapper-login
+            form.form-login(action="/register", method="post") 
+                label Meu Perfil
+                label(for="email") Email
+                input(type="text", placeholder="Digite seu email", name="email", id="email", required, value="tal")
+                label(for="password") Senha
+                input(type="password", placeholder="Digite sua senha", name="password", id="password", required)
+                label(for="username") Nome
+                input(type="text", placeholder="Digite seu nome", name="username", id="username", required, value="tal")
+                label(for="address") Endereço
+                input(type="text", placeholder="Digite seu CEP, Bairro, Rua, Nº da Casa", name="address", id="address", required, value="tal")
+                button.button Meus Anúncios
+                button.button Salvar
+            div.wrapper-login-links
+                a(href="/dashboard") Voltar
+
+//- block content  
+//-     div.content-login
+//-         div.wrapper-login
+//-             form.form-login(action="/register", method="post") 
+//-                 label Meu Perfil
+//-                 label(for="email") Email
+//-                 input(type="text", placeholder="Digite seu email", name="email", id="email", required, value=`${user.email}`)
+//-                 label(for="password") Senha
+//-                 input(type="password", placeholder="Digite sua senha", name="password", id="password", required)
+//-                 label(for="username") Nome
+//-                 input(type="text", placeholder="Digite seu nome", name="username", id="username", required, value=`${user.name}`)
+//-                 label(for="address") Endereço
+//-                 input(type="text", placeholder="Digite seu CEP, Bairro, Rua, Nº da Casa", name="address", id="address", required, value=`${user.address}`)
+//-                 button.button Meus Anúncios
+//-                 button.button Salvar
+//-             div.wrapper-login-links
+//-                 a(href="/dashboard") Voltar        
