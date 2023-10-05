@@ -102,6 +102,25 @@ server.get("/product/:id", async function(req,res) {
     return res.render('product', {youAreUsingPug: true, product: ad});
 })
 
+server.get("/deletead/:id", restrict, async function(req, res) {
+    if (!req.session.user) {
+        res.redirect('/login')
+    }
+    
+    const adId = parseInt(req.params.id, 10);
+  
+    const adRepository = new AdRepository(prisma);
+    const deletedAd = await adRepository.deleteById(adId);
+  
+    if (deletedAd) {
+      res.redirect('/dashboard');
+    } else {
+      res.locals.message = 'Erro ao excluir o anúncio. Tente novamente mais tarde.';
+      res.redirect('/dashboard');
+    }
+  });
+  
+
 
 server.get("/cart", function(req,res) { 
     if (!req.session.user) {

@@ -65,17 +65,31 @@ export class AdRepository {
       }
     }
 
-    async delete(id) {
+    // async delete(id) {
+    //   try {
+    //     const ads = await this.prisma.ad.delete({
+    //       where: {
+    //         userId: id,
+    //       },
+    //     });
+    //   } catch (error) {
+    //     console.error(error);
+    //     return null;
+    //   }
+    // }
+    async deleteById(id) {
       try {
-        const ads = await this.prisma.ad.delete({
+        const ad = await this.prisma.ad.delete({
           where: {
-            userId: id,
+            id: id,
           },
         });
+        return ad;
       } catch (error) {
         console.error(error);
         return null;
       }
     }
+    
     
   }
