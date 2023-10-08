@@ -180,8 +180,6 @@ server.get("/deletead/:id", restrict, async function(req, res) {
   });
   
   
-
-
 server.get("/cart", function(req,res) { 
     if (!req.session.user) {
         res.redirect('/login')
