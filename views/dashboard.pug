@@ -12,7 +12,8 @@ block content
                 button.button Ver Produto 
             each ad in ads
                 a(href=`/product/${ad.id}`, class="card") 
-                    img(src=`/ ${ad.image}` , alt=ad.product, class="img-product")
-                    strong.price R$ #{ad.price}
-                    span.product-name #{ad.product}
-                    button.button Ver Produto
+                    img(src=ad.image , alt=ad.product, class="img-product")
+                    div.card-text
+                        strong.price R$ #{ad.price}
+                        span.product-name #{ad.product}
+                        button.button Ver Produto
