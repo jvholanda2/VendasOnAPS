@@ -1,8 +1,8 @@
-import { PrismaClient } from "@prisma/client";
+//import { PrismaClient } from "@prisma/client";
 import  express  from "express";
-import path from "path";
+//import path from "path";
 import parser from "body-parser";
-import postgres from "postgres";
+//import postgres from "postgres";
 import session from "express-session";
 import { UserRepository } from "./src/repositories/UserRepository.js";
 import { User } from "./src/entity/user.js";
@@ -13,7 +13,7 @@ import { getPrisma } from "./prisma/prisma.js";
 const server = express();
 
 var urlencodedParser = parser.urlencoded({ extended: false })
-//console.log(prisma)
+
 const prisma = getPrisma()
 //const sql = postgres('postgres://postgres:root@localhost:5432/vendason');
 
