@@ -6,11 +6,14 @@ import { UserRepository } from './src/repositories/UserRepository.js';
 import { User } from './src/entity/user.js';
 import { AdRepository } from './src/repositories/AdRepository.js';
 import { Ad } from './src/entity/ad.js'
+import { getPrisma } from "./prisma/prisma.js";
 
 const server = express();
 
 var urlencodedParser = parser.urlencoded({ extended: false })
-const prisma = new PrismaClient()
+
+const prisma = getPrisma()
+//const sql = postgres('postgres://postgres:root@localhost:5432/vendason');
 
 server.use(session({
   resave: false, // don't save session if unmodified
@@ -65,7 +68,7 @@ server.get('/register', function(req,res) {
 
 server.post('/register', urlencodedParser, async function(req,res) {
     let name = req.body.name;
-	let password = req.body.password;
+	  let password = req.body.password;
     let email = req.body.email;
     
     const userRepository = new UserRepository(prisma)
@@ -254,8 +257,8 @@ server.get('/logout', function(req,res) {
     });
 })
 
-server.listen(5000, function() {
-    console.log('tá rodando');
+server.listen(5500, function() {
+    console.log("tá rodando");
 })
 
 function restrict(req, res, next) {
