@@ -1,19 +1,16 @@
-import { PrismaClient } from "@prisma/client";
-import  express  from "express";
-import path from "path";
-import parser from "body-parser";
-import postgres from "postgres";
-import session from "express-session";
-import { UserRepository } from "./src/repositories/UserRepository.js";
-import { User } from "./src/entity/user.js";
-import { AdRepository } from "./src/repositories/AdRepository.js";
-import { Ad } from "./src/entity/ad.js"
+import { PrismaClient } from '@prisma/client';
+import  express  from 'express';
+import parser from 'body-parser';
+import session from 'express-session';
+import { UserRepository } from './src/repositories/UserRepository.js';
+import { User } from './src/entity/user.js';
+import { AdRepository } from './src/repositories/AdRepository.js';
+import { Ad } from './src/entity/ad.js'
 
 const server = express();
 
 var urlencodedParser = parser.urlencoded({ extended: false })
 const prisma = new PrismaClient()
-const sql = postgres('postgres://postgres:root@localhost:5432/vendason');
 
 server.use(session({
   resave: false, // don't save session if unmodified
@@ -36,15 +33,15 @@ server.set('view engine', 'pug');
 server.set('views', './views');
 server.use(express.static('public'));
 
-server.get("/", async function(req,res) { 
+server.get('/', async function(req,res) { 
     return res.render('index', {youAreUsingPug: true});
 })
 
-server.get("/login", function(req,res) { 
+server.get('/login', function(req,res) { 
     return res.render('login', {youAreUsingPug: true});
 })
 
-server.post("/auth", urlencodedParser, async function(req,res) {
+server.post('/auth', urlencodedParser, async function(req,res) {
     let email = req.body.email;
     let password = req.body.password;
 
@@ -62,17 +59,17 @@ server.post("/auth", urlencodedParser, async function(req,res) {
     }
 })
 
-server.get("/register", function(req,res) { 
+server.get('/register', function(req,res) { 
     return res.render('register', {youAreUsingPug: true});
 })
 
-server.post("/register", urlencodedParser, async function(req,res) {
+server.post('/register', urlencodedParser, async function(req,res) {
     let name = req.body.name;
 	let password = req.body.password;
     let email = req.body.email;
     
     const userRepository = new UserRepository(prisma)
-    const user = await userRepository.save(new User(null,name,email,password,""))
+    const user = await userRepository.save(new User(null,name,email,password,''))
 
     if(name && password && email) {
         if (user) {
@@ -85,7 +82,7 @@ server.post("/register", urlencodedParser, async function(req,res) {
     }
 })
 
-server.get("/dashboard", restrict, async function(req,res) { 
+server.get('/dashboard', restrict, async function(req,res) { 
 
     const adRepository = new AdRepository(prisma)
     const ads = await adRepository.findAll()
@@ -93,7 +90,7 @@ server.get("/dashboard", restrict, async function(req,res) {
    
 }) 
 
-server.get("/product/:id", async function(req,res) { 
+server.get('/product/:id', async function(req,res) { 
     const productId = parseInt(req.params.id, 10)
     console.log(productId)
     const adRepository = new AdRepository(prisma)
@@ -104,7 +101,7 @@ server.get("/product/:id", async function(req,res) {
     return res.render('product', { youAreUsingPug: true, product: ad, user });
 })
 
-server.get("/deletead/:id", restrict, async function(req, res) {
+server.get('/deletead/:id', restrict, async function(req, res) {
     const adId = parseInt(req.params.id, 10);
   
     const adRepository = new AdRepository(prisma);
@@ -131,7 +128,7 @@ server.get("/deletead/:id", restrict, async function(req, res) {
     }
   });
   
-  server.get("/editad/:id", restrict, async function(req, res) {
+  server.get('/editad/:id', restrict, async function(req, res) {
     const adId = parseInt(req.params.id, 10);
     const adRepository = new AdRepository(prisma);
     const ad = await adRepository.findById(adId);
@@ -150,7 +147,7 @@ server.get("/deletead/:id", restrict, async function(req, res) {
     return res.render('editad', { youAreUsingPug: true, ad });
   });
   
-  server.post("/editad/:id", urlencodedParser, async function(req, res) {
+  server.post('/editad/:id', urlencodedParser, async function(req, res) {
     const adId = parseInt(req.params.id, 10);
   
     const adRepository = new AdRepository(prisma);
@@ -180,21 +177,21 @@ server.get("/deletead/:id", restrict, async function(req, res) {
   });
   
   
-server.get("/cart", function(req,res) { 
+server.get('/cart', function(req,res) { 
     if (!req.session.user) {
         res.redirect('/login')
     }
     return res.render('cart', {youAreUsingPug: true});
 })
 
-server.get("/newad", function(req,res) { 
+server.get('/newad', function(req,res) { 
     if (!req.session.user) {
         res.redirect('/login')
     }
     return res.render('newad', {youAreUsingPug: true});
 })
 
-server.post("/newad", urlencodedParser, async function(req,res) {
+server.post('/newad', urlencodedParser, async function(req,res) {
     if (!req.session.user) {
         res.redirect('/login')
     }
@@ -215,13 +212,13 @@ server.post("/newad", urlencodedParser, async function(req,res) {
         if (ad) {
             return res.render('product', {youAreUsingPug: true, product: ad});
         } else {
-            res.locals.message = "Anúncio ja existente, tente novamente!"
+            res.locals.message = 'Anúncio ja existente, tente novamente!'
             return res.render('newad', {youAreUsingPug: true});
         }
     }
 })
 
-server.get("/myads", async function(req,res) { 
+server.get('/myads', async function(req,res) { 
     if (!req.session.user) {
         res.redirect('/login')
     }
@@ -233,7 +230,7 @@ server.get("/myads", async function(req,res) {
     return res.render('myads', { youAreUsingPug: true, ads: userAds });
 })
 
-server.get("/myprofile", async function(req,res) { 
+server.get('/myprofile', async function(req,res) { 
     if (!req.session.user) {
         res.redirect('/login')
     }
@@ -246,19 +243,19 @@ server.get("/myprofile", async function(req,res) {
     return res.render('myprofile', {youAreUsingPug: true});
 })
 
-server.get("/buyfinish", function(req,res) { 
+server.get('/buyfinish', function(req,res) { 
     return res.render('buyfinish', {youAreUsingPug: true});
 })
 
 
-server.get("/logout", function(req,res) {
+server.get('/logout', function(req,res) {
     req.session.destroy(function(){
         res.redirect('/');
     });
 })
 
 server.listen(5000, function() {
-    console.log("tá rodando");
+    console.log('tá rodando');
 })
 
 function restrict(req, res, next) {
