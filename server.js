@@ -1,4 +1,3 @@
-import { PrismaClient } from '@prisma/client';
 import  express  from 'express';
 import parser from 'body-parser';
 import session from 'express-session';
@@ -6,13 +5,16 @@ import { UserRepository } from './src/repositories/UserRepository.js';
 import { User } from './src/entity/user.js';
 import { AdRepository } from './src/repositories/AdRepository.js';
 import { Ad } from './src/entity/ad.js'
-import { getPrisma } from "./prisma/prisma.js";
+import { getPrisma } from './prisma/prisma.js';
 
 const server = express();
 
 var urlencodedParser = parser.urlencoded({ extended: false })
 
 const prisma = getPrisma()
+
+
+
 //const sql = postgres('postgres://postgres:root@localhost:5432/vendason');
 
 server.use(session({
@@ -67,30 +69,28 @@ server.get('/register', function(req,res) {
 })
 
 server.post('/register', urlencodedParser, async function(req,res) {
-    let name = req.body.name;
-	  let password = req.body.password;
-    let email = req.body.email;
-    
-    const userRepository = new UserRepository(prisma)
-    const user = await userRepository.save(new User(null,name,email,password,''))
+  let name = req.body.name;
+  let password = req.body.password;
+  let email = req.body.email;
+  
+  const userRepository = new UserRepository(prisma)
+  const user = await userRepository.save(new User(null,name,email,password,''))
 
-    if(name && password && email) {
-        if (user) {
-            res.redirect('/login')
-        }
-        else {
-            res.locals.message = 'Já existe alguém com esse email, tente novamente!'
-            return res.render('register', {youAreUsingPug: true});
-        }
-    }
+  if(name && password && email) {
+      if (user) {
+          res.redirect('/login')
+      }
+      else {
+          res.locals.message = 'Já existe alguém com esse email, tente novamente!'
+          return res.render('register', {youAreUsingPug: true});
+      }
+  }
 })
 
 server.get('/dashboard', restrict, async function(req,res) { 
-
     const adRepository = new AdRepository(prisma)
     const ads = await adRepository.findAll()
     return res.render('dashboard', { youAreUsingPug: true, ads });
-   
 }) 
 
 server.get('/product/:id', async function(req,res) { 
@@ -258,7 +258,7 @@ server.get('/logout', function(req,res) {
 })
 
 server.listen(5500, function() {
-    console.log("tá rodando");
+    console.log('tá rodando');
 })
 
 function restrict(req, res, next) {
