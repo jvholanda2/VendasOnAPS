@@ -1,10 +1,12 @@
-import  express  from 'express';
+import express from 'express';
 import parser from 'body-parser';
 import session from 'express-session';
 import { UserRepository } from './src/repositories/UserRepository.js';
 import { User } from './src/entity/user.js';
 import { AdRepository } from './src/repositories/AdRepository.js';
-import { Ad } from './src/entity/ad.js'
+import { Ad } from './src/entity/ad.js';
+import { CarrinhoSubject } from './src/repositories/Observer/CarrinhoSubject.js';
+import { CarrinhoObserver } from './src/repositories/Observer/CarrinhoObserver.js';
 import { getPrisma } from './prisma/prisma.js';
 
 const server = express();
@@ -12,6 +14,7 @@ const server = express();
 var urlencodedParser = parser.urlencoded({ extended: false })
 
 const prisma = getPrisma()
+const carrinho = new CarrinhoSubject();
 
 
 
@@ -90,19 +93,23 @@ server.post('/register', urlencodedParser, async function(req,res) {
 server.get('/dashboard', restrict, async function(req,res) { 
     const adRepository = new AdRepository(prisma)
     const ads = await adRepository.findAll()
-    return res.render('dashboard', { youAreUsingPug: true, ads });
+    //return res.render('dashboard', { youAreUsingPug: true, ads });
+    const carrinhoCount = carrinho.getItens().length;
+    return res.render('dashboard', { youAreUsingPug: true, ads, carrinhoCount });
 }) 
 
-server.get('/product/:id', async function(req,res) { 
-    const productId = parseInt(req.params.id, 10)
-    console.log(productId)
-    const adRepository = new AdRepository(prisma)
-    const ad = await adRepository.findById(productId)
-    console.log(ad)
-    const user = req.session.user;
-    //return res.render('product', {youAreUsingPug: true, product: ad});
-    return res.render('product', { youAreUsingPug: true, product: ad, user });
-})
+
+server.get('/product/:id', async function (req, res) {
+  const productId = parseInt(req.params.id, 10);
+  const adRepository = new AdRepository(prisma);
+  const ad = await adRepository.findById(productId);
+
+  const user = req.session.user;
+
+  return res.render('product', { youAreUsingPug: true, product: ad, user, carrinhoCount: carrinho.getItens().length });
+});
+
+
 
 server.get('/deletead/:id', restrict, async function(req, res) {
     const adId = parseInt(req.params.id, 10);
@@ -180,12 +187,44 @@ server.get('/deletead/:id', restrict, async function(req, res) {
   });
   
   
-server.get('/cart', function(req,res) { 
-    if (!req.session.user) {
-        res.redirect('/login')
-    }
-    return res.render('cart', {youAreUsingPug: true});
-})
+// server.get('/cart', function(req,res) { 
+//     if (!req.session.user) {
+//         res.redirect('/login')
+//     }
+//     return res.render('cart', {youAreUsingPug: true});
+// })
+
+server.get('/addToCart/:id', async function(req, res) {
+  const productId = parseInt(req.params.id, 10);
+  const adRepository = new AdRepository(prisma);
+  const ad = await adRepository.findById(productId);
+
+  if (ad) {
+    carrinho.adicionarItem(ad);
+    res.redirect(`/product/${productId}`);
+  } else {
+    res.locals.message = 'Produto não encontrado.';
+    res.redirect('/dashboard');
+  }
+});
+
+server.get('/cart', function(req, res) {
+  if (!req.session.user) {
+    return res.redirect('/login');
+  }
+
+  const user = req.session.user;
+  const carrinhoItems = carrinho.getItens(); // Certifique-se de que este método retorna os itens corretamente
+
+  return res.render('cart', { youAreUsingPug: true, user, carrinhoItems, carrinhoTotal: carrinho.getTotal() });
+});
+
+server.get('/removeFromCart/:id', function (req, res) {
+  const productId = parseInt(req.params.id, 10);
+  carrinho.removerItem(productId);
+  return res.redirect('/cart');
+});
+
 
 server.get('/newad', function(req,res) { 
     if (!req.session.user) {

@@ -291,7 +291,7 @@ footer, .footer {
 
 .product-image {
     width: 100%;
-    border: solid red 3px;
+    //border: solid red 3px;
     object-fit: fill;
 }
 
@@ -348,6 +348,7 @@ footer, .footer {
     justify-content: space-between;
     align-items: baseline;
     margin: 20px 20%;
+    gap: 10px;
 }
 
 .buy-button .button, .buy-button #add-cart {
@@ -356,10 +357,15 @@ footer, .footer {
     justify-content: center;
     padding: 5px 50px;
     text-decoration: none;
+    text-align: center;
 }
 
 #add-cart {
     background: green;
+}
+
+#button-del {
+    background: red;
 }
 
 .check {
