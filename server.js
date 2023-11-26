@@ -208,6 +208,17 @@ server.get('/addToCart/:id', async function(req, res) {
   }
 });
 
+// server.get('/cart', function(req, res) {
+//   if (!req.session.user) {
+//     return res.redirect('/login');
+//   }
+
+//   const user = req.session.user;
+//   const carrinhoItems = carrinho.getItens(); // Certifique-se de que este método retorna os itens corretamente
+
+//   return res.render('cart', { youAreUsingPug: true, user, carrinhoItems, carrinhoTotal: carrinho.getTotal() });
+// });
+
 server.get('/cart', function(req, res) {
   if (!req.session.user) {
     return res.redirect('/login');
@@ -216,8 +227,12 @@ server.get('/cart', function(req, res) {
   const user = req.session.user;
   const carrinhoItems = carrinho.getItens(); // Certifique-se de que este método retorna os itens corretamente
 
-  return res.render('cart', { youAreUsingPug: true, user, carrinhoItems, carrinhoTotal: carrinho.getTotal() });
+  // Verifica se há itens no carrinho antes de chamar getTotal()
+  const carrinhoTotal = carrinhoItems.length > 0 ? carrinho.getTotal() : 0;
+
+  return res.render('cart', { youAreUsingPug: true, user, carrinhoItems, carrinhoTotal });
 });
+
 
 server.get('/removeFromCart/:id', function (req, res) {
   const productId = parseInt(req.params.id, 10);

@@ -1,4 +1,4 @@
-import { Ad } from "../entity/ad.js"
+import { Ad } from '../entity/ad.js'
 export class AdRepository {
     constructor(prisma) {
         this.prisma = prisma
@@ -17,7 +17,6 @@ export class AdRepository {
             });
             return myad
         } catch (error) {
-
         }
     }
   

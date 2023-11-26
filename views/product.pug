@@ -3,10 +3,11 @@ block content
     div.content
         div.content-title 
             h1 #{product.product}
-            div
-                a(href="/dashboard") Home 
-                a(href="/logout") Sair 
-                span#carrinho Quantidade no Carrinho: #{carrinhoCount}
+            div.content-brad-qtd
+                div.content-bread
+                    a(href="/dashboard") Home 
+                    a(href="/logout") Sair 
+                span.qtd-carrinho Itens no Carrinho: #{carrinhoCount}
         div.product
             div.image
                 img(src=product.image, alt="produto", class="product-image")
@@ -23,7 +24,7 @@ block content
             if user && product.userId === user.id
                 a(href=`/deletead/${product.id}`).button#button-del Excluir Anúncio
             if user && product.userId === user.id
-                a(href=`/updatead/${product.id}`).button Editar Anúncio
+                a(href=`/editad/${product.id}`).button Editar Anúncio
             //a(href="/cart").button#add-cart Adicionar ao Carrinho
             a(href=`/addToCart/${product.id}`).button#add-cart Adicionar ao Carrinho
 
