@@ -4,10 +4,23 @@ class CarrinhoSubject {
         this.carrinho = [];
     }
 
+    // adicionarItem(item) {
+    //     this.carrinho.push(item);
+    //     this.notificarObservers();
+    // }
+
     adicionarItem(item) {
-        this.carrinho.push(item);
-        this.notificarObservers();
+        const existingItem = this.carrinho.find(i => i.id === item.id);
+    
+        if (!existingItem) {
+            this.carrinho.push(item);
+            this.notificarObservers();
+        } else {
+            existingItem.quantity += 1; // Aumenta a quantidade se o item já existe
+            this.notificarObservers();
+        }
     }
+    
 
     getItens() {
         return this.carrinho;
@@ -38,13 +51,33 @@ class CarrinhoSubject {
         }
     }
 
+    // getTotal() {
+    //     let total = 0;
+    //     for (const item of this.carrinho) {
+    //         total += item.price * item.quantity;
+    //     }
+    //     return total;
+    // }
+
     getTotal() {
         let total = 0;
+    
         for (const item of this.carrinho) {
-            total += item.price * item.quantity;
+            const itemPrice = parseInt(item.price);
+            const itemQuantity = parseInt(item.quantity);
+    
+            if (!isNaN(itemPrice) && !isNaN(itemQuantity)) {
+                total += itemPrice * itemQuantity;
+            } else {
+                console.error('Item com valores inválidos:', item);
+            }
         }
-        return total;
+    
+        console.log('Total calculado:', total);
+        return total.toString(); // Retornando como string
     }
+    
+    
 }
 
 export { CarrinhoSubject };
